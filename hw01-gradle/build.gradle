@@ -17,7 +17,6 @@ dependencies {
 //}
 
 shadowJar {
-    archiveClassifier.set(null)
     archiveClassifier.set('fat')
     archiveVersion.set('')
     manifest {
