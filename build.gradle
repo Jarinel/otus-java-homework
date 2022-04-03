@@ -1,13 +1,15 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'idea'
-    // https://docs.spring.io/spring-boot/docs/2.5.0/gradle-plugin/reference/htmlsingle/#managing-dependencies.dependency-management-plugin.using-in-isolation
-    id 'org.springframework.boot' version '2.5.0' apply false
-    id 'com.github.johnrengelman.shadow' version '7.0.0' apply false
+    // https://docs.spring.io/spring-boot/docs/2.6.6/gradle-plugin/reference/htmlsingle/#managing-dependencies.dependency-management-plugin.using-in-isolation
+    id 'org.springframework.boot' version '2.6.6' apply false
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
 
 idea {
     project {
-        languageLevel = 14
+        languageLevel = 17
     }
     module {
         downloadJavadoc = true
@@ -27,9 +29,9 @@ allprojects {
     dependencyManagement {
         dependencies {
             imports {
-                mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+                mavenBom SpringBootPlugin.BOM_COORDINATES
             }
-            dependency('com.google.guava:guava:30.1.1-jre')
+            dependency("com.google.guava:guava:${Versions.guava}")
         }
     }
 
