@@ -1,16 +1,17 @@
 package homework;
 
 
-public class CustomerReverseOrder {
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-    //todo: 2. надо реализовать методы этого класса
-    //надо подобрать подходящую структуру данных, тогда решение будет в "две строчки"
+public class CustomerReverseOrder {
+    private final Deque<Customer> customers = new ArrayDeque<>();
 
     public void add(Customer customer) {
-
+        customers.push(customer);
     }
 
     public Customer take() {
-        return null; // это "заглушка, чтобы скомилировать"
+        return customers.pop();
     }
 }
