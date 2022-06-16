@@ -15,19 +15,27 @@ public class DemoTest {
         new SimpleTestRunner().runTests(DemoTest.class);
     }
 
-    private Random random = new Random(ZonedDateTime.now().toEpochSecond());
+    private final Random random = new Random(ZonedDateTime.now().toEpochSecond());
     private Integer data;
 
     @Before
     public void before() {
         log.info("Running before method");
         data = random.nextInt(1000);
+        log.info("data = {}", data);
+    }
+
+    @Before
+    public void before2() {
+        log.info("Yet another @Before method");
     }
 
     @Test
     public void test() {
-        log.info("Running test");
-        log.info("data = " + data);
+        NumberProvider provider = new NumberProvider(17);
+        if (provider.getNumber() != 17) {
+            throw new RuntimeException("Provider must return cached number");
+        }
     }
 
     @Test
@@ -37,13 +45,49 @@ public class DemoTest {
 
     @Test
     public void testToFail() {
-        throw new RuntimeException("This should fail");
+        NumberProvider provider = new NumberProvider(32);
+        if (provider.getNumber() != 32) {
+            throw new RuntimeException("Provider must return cached number");
+        }
+    }
+
+    @Test
+    private void privateTest() {
+        log.info("This test shouldn't be run due to it is private");
+    }
+
+    @Test
+    public static void staticTest() {
+        log.info("This test shouldn't be run due to it is static");
+    }
+
+    @Test
+    public String weirdTest() {
+        String s = "It's a really weird test, but still test";
+        log.info(s);
+        return s;
+    }
+
+    @Test
+    @After
+    @Before
+    public void annotationMix() {
+        log.info("This test shouldn't be run due to it has too much test annotations");
+    }
+
+    public void notATest() {
+        log.info("This method shouldn't be run due to it is not a test method");
+    }
+
+    @Test
+    public void testWithParams(int value) {
+        log.info("This test shouldn't be run due to it requires arguments being passed");
     }
 
     @After
     public void after() {
         log.info("Running after method");
         data = 0;
-        log.info("data = " + data);
+        log.info("data = {}", data);
     }
 }
