@@ -1,3 +1,5 @@
 rootProject.name = 'otus-java-homework'
+
 include 'hw01-gradle'
+include 'hw02-generics'
 
