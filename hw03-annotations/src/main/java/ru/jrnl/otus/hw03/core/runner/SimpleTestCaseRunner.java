@@ -23,10 +23,13 @@ public class SimpleTestCaseRunner implements TestCaseRunner {
             T testObject = instantiatePhase(testCase);
 
             runBeforePhase(testCase, testObject);
-            runTestPhase(testCase, testObject);
+            TestResult testResult = runTestPhase(testCase, testObject);
             runAfterPhase(testCase, testObject);
 
-            return TestResult.success();
+            if (!testResult.isSucceeded()) {
+                log.info("> Fail reason: ", unwrapRealException(testResult.getFailReason()));
+            }
+            return testResult;
         } catch (FailFastTestResultException e) {
             log.info("> Fail reason: ", unwrapRealException(e.getResult().getFailReason()));
             return e.getResult();
@@ -51,11 +54,12 @@ public class SimpleTestCaseRunner implements TestCaseRunner {
         }
     }
 
-    private <T> void runTestPhase(TestCase<T> testCase, T testObject) {
+    private <T> TestResult runTestPhase(TestCase<T> testCase, T testObject) {
         try {
             testCase.invokeTest(testObject);
+            return TestResult.success();
         } catch (Exception e) {
-            throw new FailFastTestResultException(TestResult.fail(unwrapRealException(e)));
+            return TestResult.fail(e);
         }
     }
 
